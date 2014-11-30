@@ -125,7 +125,7 @@ public sealed class InputBind {
 		if (type == BindType.BUTTON || string.IsNullOrEmpty(axis) || !enabled) { return 0f; }
 		try {
 			return Input.GetAxis (axis);
-		} catch (UnityException e) {
+		} catch (UnityException) {
 			return 0f;
 		}
 	}
@@ -135,7 +135,7 @@ public sealed class InputBind {
 		if (type == BindType.BUTTON || string.IsNullOrEmpty(axis) || !enabled) { return 0f; }
 		try {
 			return Input.GetAxisRaw (axis);
-		} catch (UnityException e) {
+		} catch (UnityException) {
 			return 0f;
 		}
 	}
