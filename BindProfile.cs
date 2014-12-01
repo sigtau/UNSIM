@@ -44,6 +44,10 @@ public sealed class BindProfile {
 	// Whether this bind is active or not.
 	public bool enabled = true;
 	
+	// Indicates that a refresh should occur.
+	[HideInInspector]
+	public bool doRefresh = false;
+	
 	// Called as soon as the scene starts--I recommend it be called from
 	// Awake() instead of Start() because this guarantees input will be ready
 	// before ANYTHING in the scene is instantiated!
@@ -62,8 +66,10 @@ public sealed class BindProfile {
 		// For performance reasons, this block only executes when the prototype list is found to be different in size
 		// from the actual bind list, so we aren't iterating (twice) over two different lists every frame.
 		// Quadruple the overhead if we don't perform this check.
-		if (binds.Count != prototypes.Count) {
-			Debug.LogWarning ("Detected discrepancy in the input prototype and bind caches.  Syncing cache...");
+		// This block will also execute if a change is said to have occurred.
+		if (binds.Count != prototypes.Count || doRefresh) {
+			if (!doRefresh) { Debug.LogWarning ("Detected discrepancy in the input prototype and bind caches.  Syncing cache..."); }
+			else { doRefresh = false; }
 			
 			// Check for binds without corresponding prototype, and remove binds if the prototype doesn't exist.
 			foreach (InputBind bind in binds) {
@@ -221,5 +227,34 @@ public sealed class BindProfile {
 		
 		return bind.getAxisRawValue();
 	}
+	
+	public BindPrototype getBind(string handle) {
+		BindPrototype bind = null;
+		foreach (BindPrototype b in binds) {
+			if (b.handle.Equals(handle)) {
+				bind = b;
+				break;
+			}
+		}
+		
+		if (bind == null || !enabled) {
+			Debug.LogWarning ("Attempted to get bind prototype '" + handle + "' which does not exist in the current bind profile.  Ignoring.");
+			return null;
+		}
+		
+		return bind;
+	}
+	
+	public void setBind(string handle, BindPrototype newBind) {
+		foreach (BindPrototype b in binds) {
+			if (b.handle.Equals(handle)) {
+				b = newBind;
+				return;
+			}
+		}
+		
+		Debug.LogWarning ("Attempted to set bind prototype '" + handle + "' which does not exist in the current bind profile.  Ignoring.");
+	}
+	
 	
 }
