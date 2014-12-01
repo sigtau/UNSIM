@@ -113,4 +113,13 @@ public sealed class InputManager : MonoBehaviour {
 		return validateIndex() ? profiles[activeProfileIndex] : null;
 	}
 	
+	// Returns whether the specified bind is an axis.
+	public bool isAxis(string handle) {
+		if (validateIndex()) {
+			return profiles[activeProfileIndex].isAxis (handle);
+		} else {
+			return false;
+		}
+	}
+	
 }
