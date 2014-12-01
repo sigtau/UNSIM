@@ -108,4 +108,9 @@ public sealed class InputManager : MonoBehaviour {
 		return obj.GetComponent<InputManager>();
 	}
 	
+	// Returns the active profile.
+	public BindProfile getActiveProfile() {
+		return validateIndex() ? profiles[activeProfileIndex] : null;
+	}
+	
 }
