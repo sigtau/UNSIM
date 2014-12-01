@@ -69,7 +69,11 @@ public sealed class BindProfile {
 		// This block will also execute if a change is said to have occurred.
 		if (binds.Count != prototypes.Count || doRefresh) {
 			if (!doRefresh) { Debug.LogWarning ("Detected discrepancy in the input prototype and bind caches.  Syncing cache..."); }
-			else { doRefresh = false; }
+			else { 
+				doRefresh = false;
+				binds.Clear();
+				initialize ();
+			}
 			
 			// Check for binds without corresponding prototype, and remove binds if the prototype doesn't exist.
 			foreach (InputBind bind in binds) {
@@ -228,27 +232,11 @@ public sealed class BindProfile {
 		return bind.getAxisRawValue();
 	}
 	
-	public BindPrototype getBind(string handle) {
-		BindPrototype bind = null;
-		foreach (BindPrototype b in binds) {
+	public void setButtonBind(string handle, KeyCode kc) {
+		foreach (BindPrototype b in prototypes) {
 			if (b.handle.Equals(handle)) {
-				bind = b;
-				break;
-			}
-		}
-		
-		if (bind == null || !enabled) {
-			Debug.LogWarning ("Attempted to get bind prototype '" + handle + "' which does not exist in the current bind profile.  Ignoring.");
-			return null;
-		}
-		
-		return bind;
-	}
-	
-	public void setBind(string handle, BindPrototype newBind) {
-		foreach (BindPrototype b in binds) {
-			if (b.handle.Equals(handle)) {
-				b = newBind;
+				b.keyCode = kc;
+				doRefresh = true;
 				return;
 			}
 		}
@@ -256,5 +244,16 @@ public sealed class BindProfile {
 		Debug.LogWarning ("Attempted to set bind prototype '" + handle + "' which does not exist in the current bind profile.  Ignoring.");
 	}
 	
+	public void setAxisBind(string handle, string axis) {
+		foreach (BindPrototype b in prototypes) {
+			if (b.handle.Equals(handle)) {
+				b.axisName = axis;
+				doRefresh = true;
+				return;
+			}
+		}
+		
+		Debug.LogWarning ("Attempted to set bind prototype '" + handle + "' which does not exist in the current bind profile.  Ignoring.");
+	}
 	
 }
