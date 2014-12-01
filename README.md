@@ -51,7 +51,7 @@ Using Multiple Profiles
 If you wish to have multiple profiles--say you have one tester who prefers to use a gamepad, but another tester who likes to use a keyboard and mouse--you can set them up like so:
 
 1. In the Inspector for the InputManager script, set the **Size** value under **Profiles** to be however many profiles you want there to be.  By default, it's set to 1--however, you can adjust this to 2 or 3 or however many you need.
-2. Under each profile, labeled by **Element 0,** **Element 1,** etc. set your key binds and axis binds as defined in the above text (see [Using UNSIM](#using-unsim])).
+2. Under each profile, labeled by **Element 0,** **Element 1,** etc. set your key binds and axis binds as defined in the above text (see [Using UNSIM](#using-unsim)).
 3. To switch which profile is being used, set the **Active Profile Index** in the InputManager's Inspector to be the Element value of the profile you want.  (For example, to use the first profile, set it to 0, for the second profile, set it to 1, etc.)
 
 You can also switch profiles from code:
