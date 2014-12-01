@@ -140,4 +140,12 @@ public sealed class InputBind {
 		}
 	}
 	
+	public void setKeyBind(KeyCode kc) {
+		this.button = kc;
+	}
+	
+	public void setAxisBind(string axis) {
+		this.axis = axis;
+	}
+	
 }
